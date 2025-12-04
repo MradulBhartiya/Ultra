@@ -1,0 +1,56 @@
+# ──────────────────────────────
+# Global Ignores
+# ──────────────────────────────
+
+.DS_Store
+Thumbs.db
+*.log
+
+# VSCode
+.vscode/
+.idea/
+
+# ──────────────────────────────
+# FRONTEND (Next.js)
+# ──────────────────────────────
+
+Frontend/node_modules/
+Frontend/.next/
+Frontend/out/
+Frontend/.swc/
+Frontend/dist/
+Frontend/.turbo/
+
+# Environment
+Frontend/.env
+Frontend/.env.local
+Frontend/.env.development
+Frontend/.env.production
+
+# ──────────────────────────────
+# BACKEND (FastAPI + Python)
+# ──────────────────────────────
+
+Backend/venv/
+Backend/__pycache__/
+Backend/.pytest_cache/
+Backend/.mypy_cache/
+Backend/.ruff_cache/
+
+# Bytecode
+Backend/**/*.pyc
+
+# Uploads (if you don’t want them in git)
+Backend/app/uploads/
+
+# Env files
+Backend/.env
+Backend/*.env
+
+# ──────────────────────────────
+# OS Files
+# ──────────────────────────────
+
+*.bak
+*.tmp
+*.swp
