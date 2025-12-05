@@ -1,11 +1,11 @@
 "use client";
 
+import React, { Suspense, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, ContactShadows, useGLTF } from "@react-three/drei";
-import { useEffect } from "react";
 import * as THREE from "three";
 
-type MuscleId = string;        // or your union type
+type MuscleId = string;
 
 type MuscleAnatomyProps = {
   activeMuscles: MuscleId[];
@@ -19,34 +19,32 @@ function AnatomyModel({ activeMuscles }: { activeMuscles: string[] }) {
   };
 
   useEffect(() => {
-    console.log("---- GLB NODES ----");
+    // optional debug
     scene.traverse((node: any) => {
       if (node.isMesh) {
-        console.log(node.name);
+        // console.log(node.name);
       }
     });
   }, [scene]);
 
-  // 1) scale & position once
   useEffect(() => {
-    scene.scale.set(0.005, 0.005, 0.005);        // bigger
-    scene.position.set(0, -0.1, 0);   // lift body up into center
+    scene.scale.set(0.005, 0.005, 0.005);
+    scene.position.set(0, -0.1, 0);
   }, [scene]);
 
-  // 2) base white + highlight active muscles
   useEffect(() => {
     scene.traverse((node: any) => {
       if (node.isMesh) {
-        node.castShadow = true;       // <-- casts shadow
-        node.receiveShadow = true;    // <-- can receive shadow too
+        node.castShadow = true;
+        node.receiveShadow = true;
 
         const mat = node.material as THREE.MeshStandardMaterial | undefined;
         if (mat) {
-          // remove original texture so color actually shows
+          // remove texture so flat color applies
           // @ts-ignore
           if (mat.map) mat.map = null;
 
-          mat.color = new THREE.Color("#ffffff");    // pure white body
+          mat.color = new THREE.Color("#ffffff");
           mat.emissive = new THREE.Color("#000000");
           mat.roughness = 0.5;
           mat.metalness = 0;
@@ -54,7 +52,7 @@ function AnatomyModel({ activeMuscles }: { activeMuscles: string[] }) {
       }
     });
 
-    // highlight selected muscles in red
+    // highlight selected muscles
     activeMuscles.forEach((name) => {
       const muscle = scene.getObjectByName(name);
       if (muscle && (muscle as any).material) {
@@ -71,50 +69,57 @@ function AnatomyModel({ activeMuscles }: { activeMuscles: string[] }) {
 
 /* ------------ MAIN COMPONENT ------------ */
 
-export default function MuscleAnatomy({ activeMuscles }: { activeMuscles: string[] }) {
+export default function MuscleAnatomy({ activeMuscles }: MuscleAnatomyProps) {
   return (
     <div className="w-full h-full">
-      <Canvas className="rounded-xl"
-        shadows                                      // <-- enable renderer shadows
-        camera={{ position: [0, 1.4, 2.6], fov: 35 }} // closer & tighter
+      <Canvas
+        className="w-full h-full"
+        shadows
+        dpr={[1, 2]}
+        camera={{ position: [0, 1.4, 2.6], fov: 35 }}
+        onCreated={({ gl }) => {
+          // Enable shadow map (keep default map type to avoid export issues)
+          gl.shadowMap.enabled = true;
+
+          // If you want to set encoding and your three version exports it:
+          // import { sRGBEncoding } from 'three'
+          // gl.outputEncoding = sRGBEncoding;
+          //
+          // But many three versions changed the constant name — so leave it out
+          // unless you confirm your installed three supports it.
+        }}
       >
-        <color attach="background" args={["#e5e7eb"]} />
+        <color attach="background" args={["#e9eaec"]} />
 
         <ambientLight intensity={0.7} />
 
-        {/* main light that produces shadows */}
         <directionalLight
-          castShadow                                  // <-- this light casts shadows
+          castShadow
           position={[6, 8, 5]}
           intensity={1.4}
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
+          shadow-camera-left={-5}
+          shadow-camera-right={5}
+          shadow-camera-top={5}
+          shadow-camera-bottom={-5}
+          shadow-camera-near={0.5}
+          shadow-camera-far={20}
         />
+
         <directionalLight position={[-4, 4, 2]} intensity={0.5} />
         <directionalLight position={[0, 4, -4]} intensity={0.4} />
 
-        <AnatomyModel activeMuscles={activeMuscles} />
+        <Suspense fallback={null}>
+          <AnatomyModel activeMuscles={activeMuscles} />
+        </Suspense>
 
-        {/* HARD FLOOR that receives shadows */}
-        <mesh
-          receiveShadow                               // <-- floor receives shadows
-          rotation={[-Math.PI / 2, 0, 0]}
-          position={[0, -0.9, 0]}                     // adjust slightly if feet clip
-        >
+        <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.9, 0]}>
           <planeGeometry args={[20, 20]} />
           <meshStandardMaterial color="#e8e9eb" />
         </mesh>
 
-        {/* SOFT CONTACT SHADOW for a nice glow under the feet */}
-        <ContactShadows
-          position={[0, -0.9, 0]}
-          opacity={0.4}
-          width={12}
-          height={12}
-          blur={2.5}
-          far={6}
-          smooth
-        />
+        <ContactShadows position={[0, -0.9, 0]} opacity={0.4} width={12} height={12} blur={2.5} far={6} smooth />
 
         <OrbitControls
           enablePan={false}
@@ -126,6 +131,6 @@ export default function MuscleAnatomy({ activeMuscles }: { activeMuscles: string
           maxDistance={3.6}
         />
       </Canvas>
-    </div>
-  );
+    </div>
+  );
 }
