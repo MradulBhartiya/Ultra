@@ -1,9 +1,16 @@
+"use client";
+
 import Campage from "./components/Campage";
+import LiveCamCard from "./components/LiveCam/LiveCamCard";
 import ModelViewer3D from "./components/ModelViewer3D";
 import Navbar from "./components/Navbar";
 import Image from "next/image"; // optional if using next/image
+import { useRef, useState } from "react";
+import Stickman from "./components/Stickman";
 
 export default function Home() {
+  let [isLiveCam, setIsLiveCam] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
   return (
     // root must define full viewport height
     <div className="min-h-screen flex flex-col bg-[url('/Background.png')] bg-cover bg-center">
@@ -11,19 +18,26 @@ export default function Home() {
       <header className="flex-none h-16">
         <Navbar />
       </header>
+      {/* <LiveCamCard/> */}
 
       {/* Main area: fill remaining space; min-h-0 lets children use flex height */}
       <main className="flex-1 flex gap-4 p-4 min-h-0">
         {/* LEFT: 70% column - ensure min-h-0 so inner flex children can stretch */}
         <section className="w-full flex flex-col gap-4 min-h-0">
-          <div className="flex gap-4 p-4 h-[60%] w-full">
+          <div className="flex gap-4 p-4 h-[50%] w-full">
             {/* <div className="grow bg-white/10 border rounded-xl flex items-center justify-center min-h-[220px]">
               
             </div> */}
-            <Campage/>
-            <div className="grow bg-white/6 border rounded-xl flex items-center justify-center min-h-[220px]">
-              <p>Stick man</p>
+            <Campage setIsLiveCam={setIsLiveCam}/>
+            <div className="grow rounded-xl flex items-center justify-center bg-gray-100 h-full w-[40%] overflow-hidden shadow-lg shadow-gray-500">
+              {isLiveCam ? (
+                <LiveCamCard />
+              ) : (
+                // <Stickman/>
+                <p>Stickman</p>
+              )}
             </div>
+
           </div>
 
           <div className="flex gap-4 p-4 min-h-0">
@@ -51,4 +65,4 @@ export default function Home() {
       </main>
     </div>
   );
-}
+} 
