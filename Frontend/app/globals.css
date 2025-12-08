@@ -21,3 +21,14 @@
     box-shadow: 0 0 0 0 rgba(209, 26, 42, 0);
   }
 }
+
+/* Hide scrollbar but keep scroll functionality */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}

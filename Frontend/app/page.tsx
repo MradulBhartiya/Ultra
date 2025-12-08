@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import Navbar from "./components/Navbar";
+import { useState } from "react";
+import { useAuth } from "./context/AuthContext";
 
 const developers = [
   {
@@ -22,6 +24,8 @@ const developers = [
 
 export default function HomePage() {
   const router = useRouter();
+  const {isLoggedin,setIsLoggedin} = useAuth();
+  // let [isLoggedin,setIsLoggedin] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col">
@@ -32,7 +36,7 @@ export default function HomePage() {
 
         {/* navbar overlay */}
         <header className="relative z-20 backdrop-blur-md shadow-sm bg-white/60">
-          <Navbar />
+          <Navbar/>
         </header>
 
         {/* hero content */}

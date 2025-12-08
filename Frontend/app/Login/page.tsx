@@ -3,9 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../Database/supabase-client";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { setIsLoggedin } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,6 +30,7 @@ export default function LoginPage() {
       return;
     }
 
+    setIsLoggedin(true);
     router.push("/Dashboard");
   }
 
@@ -104,7 +108,7 @@ export default function LoginPage() {
             </form>
 
             <button
-              onClick={() => router.push("/Signup")}
+              onClick={() => router.push("/signup")}
               className="mt-4 text-xs text-blue-600 hover:underline self-center"
             >
               Don’t have an account? Create one
