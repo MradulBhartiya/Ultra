@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+/* 🔴 Red Pulse Animation */
+.stop-btn {
+  background: #d11a2a;
+  animation: pulse-red 1.4s infinite ease-in-out;
+  box-shadow: 0 0 0 0 rgba(209, 26, 42, 0.6);
+}
+
+@keyframes pulse-red {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(209, 26, 42, 0.6);
+  }
+  70% {
+    transform: scale(1.07);
+    box-shadow: 0 0 12px 12px rgba(209, 26, 42, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(209, 26, 42, 0);
+  }
+}

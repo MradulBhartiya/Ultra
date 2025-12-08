@@ -53,14 +53,23 @@ export default function Home() {
   const [num, setNum] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!isLiveCam) return;
+  if (!isLiveCam) {
+    // reset when camera stops
+    setNum(null);
+    return;
+  }
 
-    const update = () => setNum(getRandomScore());
-    update();
+  // when camera starts → live updates begin
+  const update = () => {
+    const score = getRandomScore();
+    setNum(score);
+  };
 
-    const id = setInterval(update, 2000);
-    return () => clearInterval(id);
-  }, [isLiveCam]);
+  update(); // first update immediately
+  const id = setInterval(update, 2000);
+
+  return () => clearInterval(id);
+}, [isLiveCam]);
 
   const accuracyStyles = getAccuracyStyles(num);
 
@@ -96,7 +105,7 @@ export default function Home() {
                 <p
                   className={`mt-3 text-4xl font-semibold transition-colors duration-300 ${accuracyStyles.text}`}
                 >
-                  {num !== null ? `${num}%` : "--%"}
+                  {isLiveCam && num !== null ? `${num}%` : "--%"}
                 </p>
               </div>
 

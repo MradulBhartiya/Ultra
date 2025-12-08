@@ -190,7 +190,7 @@ export default function HomePage() {
 
       {/* ================= FOOTER ================= */}
       <footer className="mt-auto border-t border-gray-200 bg-white py-6 text-center text-xs md:text-sm text-gray-500">
-        © {new Date().getFullYear()} Exercise Analyzer. All rights reserved.
+        © {new Date().getFullYear()} PostureIQ. All rights reserved.
       </footer>
     </div>
   );
