@@ -41,7 +41,7 @@ export default function Navbar() {
       {/* Right: Login / Sign Up Buttons */}
       <div className="hidden sm:flex items-center gap-2">
         <a
-          href="/login"
+          href="/Login"
           className={`relative px-4 py-1.5 text-xs md:text-sm font-medium rounded-full transition-all duration-200 ${
             pathname === "/login"
               ? "bg-black text-white shadow-lg"
@@ -52,7 +52,7 @@ export default function Navbar() {
         </a>
 
         <a
-          href="/signup"
+          href="/Signup"
           className="relative px-4 py-1.5 text-xs md:text-sm font-semibold rounded-full 
                      bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-md
                      transition-all duration-200 hover:shadow-lg hover:-translate-y-1px active:translate-y-1px"
