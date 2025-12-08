@@ -54,7 +54,7 @@ export default function LiveCamCard() {
   }, []);
 
   return (
-    <div className="w-full h-full flex items-center bg-gray-100 rounded-2xl justify-center">
+    <div className="w-full h-full flex items-center bg-gray-100/20 rounded-2xl justify-center">
       <video ref={videoRef} className="hidden" />
 
       <canvas
