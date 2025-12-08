@@ -33,8 +33,8 @@ export default function Navbar() {
 
         <a href="/workouts" className={linkClasses("/workouts")}>Workouts</a>
         <a href="/history" className={linkClasses("/history")}>History</a>
-        <a href="/Dashboard" className={linkClasses("/Dashboard")}>Dashboard</a>
         <a href="/" className={linkClasses("/")}>Home</a>
+        <a href="/Dashboard" className={linkClasses("/Dashboard")}>Dashboard</a>
         <a href="/feedback" className={linkClasses("/feedback")}>Feedback</a>
       </div>
 
